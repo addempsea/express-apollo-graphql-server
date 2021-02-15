@@ -50,7 +50,7 @@ server.installSubscriptionHandlers(httpServer);
 
 app.use(morgan('dev', { stream: logger.stream }));
 
-const uri = `mongodb://localhost:27017/apollo`;
+const uri = `mongodb+srv://admin:1Password-@cluster0.5nms6.mongodb.net/apollo?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 mongoose
