@@ -1,0 +1,28 @@
+{
+  "name": "apollo-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r esm app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.19.2",
+    "aws-sdk": "^2.841.0",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "graphql-redis-subscriptions": "^2.3.1",
+    "ioredis": "^4.22.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.15",
+    "morgan": "^1.10.0",
+    "subscriptions-transport-ws": "^0.9.18",
+    "winston": "^3.3.3"
+  }
+}
