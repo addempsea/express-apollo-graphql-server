@@ -60,12 +60,12 @@ mongoose
     throw error;
   });
 
-httpServer.listen({ port: process.env.PORT }, () => {
+httpServer.listen({ port: process.env.PORT || 3000 }, () => {
   logger.info(
-    `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
+    `🚀 Server ready at http://localhost:${process.env.PORT || 3000}${server.graphqlPath}`
   );
   logger.info(
-    `🚀🚀 Subscriptions ready at ws://localhost:${process.env.PORT}${
+    `🚀🚀 Subscriptions ready at ws://localhost:${process.env.PORT || 3000}${
       server.subscriptionsPath
     }`
   );
