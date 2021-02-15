@@ -8,41 +8,11 @@ import { ApolloServer } from 'apollo-server-express';
 import { resolvers, typeDefs } from './graphql';
 import { auth, loginUser, errorHandler } from './utils/helpers';
 import logger from './logger';
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 global.logger = logger;
-
-// const myPlugin = {
-//   // Fires whenever a GraphQL request is received from a client.
-//   requestDidStart(requestContext) {
-//     console.log('Request started! Query:\n' + requestContext.request.query);
-
-//     return {
-//       // Fires whenever Apollo Server will parse a GraphQL
-//       // request to create its associated document AST.
-//       parsingDidStart(requestContext) {
-//         console.log('Parsing started!');
-//       },
-
-//       // Fires whenever Apollo Server will validate a
-//       // request's document AST against your GraphQL schema.
-//       validationDidStart(requestContext) {
-//         console.log('Validation started!');
-//       }
-//     };
-//   }
-// };
-
-class BasicLogging {
-  requestDidStart({ queryString, parsedQuery, variables }) {
-    const query = queryString || print(parsedQuery);
-    logger.info(query);
-    logger.info(variables);
-  }
-
-  willSendResponse({ graphqlResponse }) {
-    logger.info(JSON.stringify(graphqlResponse, null, 2));
-  }
-}
 const app = express();
 app.use(json());
 app.use(cors());
@@ -69,20 +39,14 @@ app.use('/login', loginRoute);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  // plugins: [myPlugin],
-  // extensions: [() => new BasicLogging()],
-  // context: ({ req }) => {
-  //   const user = req.user;
-  //   return user;
-  // },
   formatError: (err) => {
     const error = errorHandler(err);
     return error;
   }
 });
 server.applyMiddleware({ app });
-// const httpServer = createServer(app);
-// server.installSubscriptionHandlers(httpServer);
+const httpServer = createServer(app);
+server.installSubscriptionHandlers(httpServer);
 
 app.use(morgan('dev', { stream: logger.stream }));
 
@@ -96,14 +60,12 @@ mongoose
     throw error;
   });
 
-console.log(server);
-
-app.listen({ port: 3000 }, () => {
+httpServer.listen({ port: process.env.PORT }, () => {
   logger.info(
-    `🚀 Server ready at http://localhost:${3000}${server.graphqlPath}`
+    `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
   );
   logger.info(
-    `🚀🚀 Subscriptions ready at ws://localhost:${3000}${
+    `🚀🚀 Subscriptions ready at ws://localhost:${process.env.PORT}${
       server.subscriptionsPath
     }`
   );
