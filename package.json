@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon -r esm app.js",
     "start": "node -r esm app.js",
+    "lint": "eslint --ext .js ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,6 +15,7 @@
   "dependencies": {
     "apollo-server-express": "^2.19.2",
     "aws-sdk": "^2.841.0",
+    "bull": "^3.20.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
@@ -24,7 +26,17 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.15",
     "morgan": "^1.10.0",
+    "nyc": "^15.1.0",
+    "redis": "^3.0.2",
     "subscriptions-transport-ws": "^0.9.18",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.3.0",
+    "mocha": "^8.1.3"
   }
 }

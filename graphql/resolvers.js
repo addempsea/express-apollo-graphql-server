@@ -1,8 +1,21 @@
+import { createJob } from '../jobs';
 import { Restaurant, Customer, Order, Admin } from '../models';
-import { upload } from '../utils/helpers';
+import { errorLogger, upload } from '../utils/helpers';
 import { pubsub, withFilter } from './pubsub';
 
 const resolvers = {
+  Response: {
+    __resolveType(obj, context, info){
+      console.log(obj);
+      if(obj.data){
+        return 'OrdersResult';
+      }
+      if(!obj.data){
+        return 'Errors';
+      }
+      return null; // GraphQLError is thrown
+    },
+  },
   Query: {
     async restaurants(parent, args, context, info) {
       // console.log(context);
@@ -39,13 +52,14 @@ const resolvers = {
     },
     async orders(parent, args, context, info) {
       try {
-        // if (context.username) {
-        //   return Error('Not an admin: 403')
-        // }
         const orderObj = await Order.find().populate('customerId');
-        return orderObj.map((o) => ({ ...o._doc }));
-      } catch (err) {
-        console.error(err);
+        if (orderObj) {
+          return {status: 400, message: 'No way', data: [null]}
+        }
+        return { data: orderObj, status: 200, message: 'SUCCESS' };
+        // createJob({ type: 'SEND_PASSWORD_TO_EMAL', data: orderObj })
+      } catch (error) {
+        return errorLogger(error, 'GET_ALL_ORDERS', 'Error while trying to fetch orders, it\'s not you, it\'s us')
       }
     },
     async order(parent, args, context, info) {
@@ -134,7 +148,9 @@ const resolvers = {
       subscribe: withFilter(
         () => pubsub.asyncIterator('NEW_ORDER'),
         (payload, variables) => {
-          return `${payload.newOrder.restaurantId}` === `${variables.restaurantId}`;
+          return (
+            `${payload.newOrder.restaurantId}` === `${variables.restaurantId}`
+          );
         }
       )
     },

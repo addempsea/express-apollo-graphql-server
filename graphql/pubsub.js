@@ -1,6 +1,6 @@
 import { withFilter } from 'apollo-server-express';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import Redis from 'ioredis';
+import Redis from 'redis';
 
 const options = {
   host: 'redis-19840.c135.eu-central-1-1.ec2.cloud.redislabs.com',
@@ -14,8 +14,8 @@ const options = {
 
 
 const pubsub = new RedisPubSub({
-  publisher: new Redis(options),
-  subscriber: new Redis(options)
+  publisher: Redis.createClient(options),
+  subscriber: Redis.createClient(options)
 });
 
 export { pubsub, withFilter };
