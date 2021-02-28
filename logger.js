@@ -5,7 +5,7 @@ const myFormat = winston.format.combine(
   winston.format.timestamp(),
   winston.format.align(),
   winston.format.printf(
-    msg => `[${new Date(msg.timestamp).toString()}] - ${msg.level}: ${msg.message}]`
+    msg => `[${new Date(msg.timestamp).toString()}] - ${msg.level}:${msg.message}`
   )
 );
 const logger = winston.createLogger({

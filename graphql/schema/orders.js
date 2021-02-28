@@ -14,8 +14,20 @@ const Orders = gql`
     restaurant: Restaurant
     order: [String]
   }
+  type OrdersResult {
+    status: Int!
+    message: String!
+    data: [OrdersPopulated]!
+  }
+  type Errors {
+    status: Int!
+    message: String!
+  }
+
+  union Response = OrdersResult | Errors
+
   extend type Query {
-    orders: [OrdersPopulated]
+    orders: OrdersResult
     order(id: String): OrdersPopulated
   }
   extend type Mutation {

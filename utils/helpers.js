@@ -57,7 +57,7 @@ export const upload = (file, name) => {
       .toString(32)
       .substring(2)}${ext}`;
     const params = {
-      Bucket: 'awake-vending',
+      Bucket: '-ven-',
       Key: fileName,
       Body: file,
       ContentType: file.mimetype,
@@ -67,4 +67,9 @@ export const upload = (file, name) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const errorLogger = (error, status, message) => {
+  logger.error(`${error.name} - ${status} - ${error.message} `);
+  return { status: 500, message };
 };

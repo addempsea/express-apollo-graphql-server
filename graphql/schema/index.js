@@ -5,6 +5,7 @@ import restaurants from './restaurants';
 import admins from './admin';
 import subscription from './subscription';
 import upload from './upload';
+import enums from './enum';
 
 const schemaArray = [
   root,
@@ -13,7 +14,8 @@ const schemaArray = [
   orders,
   admins,
   subscription,
-  upload
+  upload,
+  enums
 ];
 
 export default schemaArray;
